@@ -20,13 +20,13 @@ async function logout(page) {
 async function findProduct(page, productName) {
 
 
-
     const product = await page.waitForSelector(`text=${productName}`);
 
     if (product) {
         await product.click();
     } else {
-        console.log(`Product not found: ${productName}`);
+
+        const noProduct = console.log(`Product not found!`);
     }
 
 }
@@ -70,6 +70,21 @@ async function checkForRemoveButton(page, expect) {
 
 }
 
+async function checkForProduct(page, expect, productName) {
+
+    const listProduct = await page.$$(".inventory_item_name")
+
+    const productTexts = await Promise.all(listProduct.map((product) => product.textContent()));
+
+    if (productTexts.length > 0) {
+        expect(productTexts).toContain(productName)
+    } else {
+        console.log("There is no products!");
+        expect(productTexts.length).toBe(0);
+    }
+}
+
+
 async function checkForTwoProducts(page, expect, productName1, productName2) {
 
     const listProduct = await page.$$(".inventory_item_name")
@@ -90,5 +105,6 @@ module.exports = {
     fillCustomer: fillCustomer,
     pickProduct: pickProduct,
     checkForRemoveButton: checkForRemoveButton,
+    checkForProduct: checkForProduct,
     checkForTwoProducts: checkForTwoProducts
 }
