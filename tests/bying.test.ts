@@ -121,6 +121,175 @@ test("Test empty cart", async ({ page }) => {
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
     await checkForProduct(page, expect, [])
+})
+
+test("Test empty buyer data", async ({ page }) => {
+
+    await findProduct(page, bikeLight)
+
+    await page.getByText("Add to cart").click()
+
+    const span = await page.locator("span.shopping_cart_badge")
+
+    expect(span).toHaveText("1")
+
+    const remove = await page.getByText("Remove")
+
+    expect(remove).toBeVisible()
+
+    await page.click("a.shopping_cart_link")
+
+    expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
+
+    await checkForProduct(page, expect, bikeLight)
+
+    await page.click("#checkout")
+
+    await fillCustomer(page, "", "", "")
+
+    const errorFirstName = await page.locator("#first-name")
+
+    expect(errorFirstName).toHaveValue("")
+
+    const errorLastName = await page.locator("#last-name")
+
+    expect(errorLastName).toHaveValue("")
+
+    const errorPostalCode = await page.locator("#postal-code")
+
+    expect(errorPostalCode).toHaveValue("")
+
+    const error = await page.locator("h3[data-test='error']")
+
+    expect(error).toHaveText("Error: First Name is required")
+
+})
+
+test("Test empty first name data", async ({ page }) => {
+
+    await findProduct(page, bikeLight)
+
+    await page.getByText("Add to cart").click()
+
+    const span = await page.locator("span.shopping_cart_badge")
+
+    expect(span).toHaveText("1")
+
+    const remove = await page.getByText("Remove")
+
+    expect(remove).toBeVisible()
+
+    await page.click("a.shopping_cart_link")
+
+    expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
+
+    await checkForProduct(page, expect, bikeLight)
+
+    await page.click("#checkout")
+
+    await fillCustomer(page, "", lastName, postalCode)
+
+    const errorFirstName = await page.locator("#first-name")
+
+    expect(errorFirstName).toHaveValue("")
+
+    const errorLastName = await page.locator("#last-name")
+
+    expect(errorLastName).toHaveValue(lastName)
+
+    const errorPostalCode = await page.locator("#postal-code")
+
+    expect(errorPostalCode).toHaveValue(postalCode)
+
+    const error = await page.locator("h3[data-test='error']")
+
+    expect(error).toHaveText("Error: First Name is required")
+
+
+})
+
+test("Test empty last name data", async ({ page }) => {
+
+    await findProduct(page, bikeLight)
+
+    await page.getByText("Add to cart").click()
+
+    const span = await page.locator("span.shopping_cart_badge")
+
+    expect(span).toHaveText("1")
+
+    const remove = await page.getByText("Remove")
+
+    expect(remove).toBeVisible()
+
+    await page.click("a.shopping_cart_link")
+
+    expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
+
+    await checkForProduct(page, expect, bikeLight)
+
+    await page.click("#checkout")
+
+    await fillCustomer(page, firstName, "", postalCode)
+
+    const errorFirstName = await page.locator("#first-name")
+
+    expect(errorFirstName).toHaveValue(firstName)
+
+    const errorLastName = await page.locator("#last-name")
+
+    expect(errorLastName).toHaveValue("")
+
+    const errorPostalCode = await page.locator("#postal-code")
+
+    expect(errorPostalCode).toHaveValue(postalCode)
+
+    const error = await page.locator("h3[data-test='error']")
+
+    expect(error).toHaveText("Error: Last Name is required")
+
+
+})
+
+test("Test empty postal code data", async ({ page }) => {
+
+    await findProduct(page, bikeLight)
+
+    await page.getByText("Add to cart").click()
+
+    const span = await page.locator("span.shopping_cart_badge")
+
+    expect(span).toHaveText("1")
+
+    const remove = await page.getByText("Remove")
+
+    expect(remove).toBeVisible()
+
+    await page.click("a.shopping_cart_link")
+
+    expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
+
+    await checkForProduct(page, expect, bikeLight)
+
+    await page.click("#checkout")
+
+    await fillCustomer(page, firstName, lastName, "")
+
+    const errorFirstName = await page.locator("#first-name")
+
+    expect(errorFirstName).toHaveValue(firstName)
+
+    const errorLastName = await page.locator("#last-name")
+
+    expect(errorLastName).toHaveValue(lastName)
+
+    const errorPostalCode = await page.locator("#postal-code")
+
+    expect(errorPostalCode).toHaveValue("")
+
+    const error = await page.locator("h3[data-test='error']")
+
+    expect(error).toHaveText("Error: Postal Code is required")
 
 
 })
