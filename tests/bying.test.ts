@@ -26,6 +26,18 @@ test("Test products page", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/inventory.html")
 
+    const logo = await page.locator("div.app_logo")
+
+    expect(logo).toHaveText("Swag Labs")
+
+    const title = await page.locator("span.title")
+
+    expect(title).toHaveText("Products")
+
+
+
+
+
 
 
 
@@ -104,10 +116,5 @@ test("Test buying two products", async ({ page }) => {
     expect(finish).toHaveText("Thank you for your order!")
 
     await page.waitForTimeout(5000)
-
-
-
-
-
 
 })
