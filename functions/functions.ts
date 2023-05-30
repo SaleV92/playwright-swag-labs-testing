@@ -93,7 +93,21 @@ async function checkForTwoProducts(page, expect, productName1, productName2) {
 
     expect(productTexts).toContain(productName1, productName2)
 
+}
 
+async function switchPage(page, expect, context, selector, url, title) {
+
+    const [newPage] = await Promise.all([
+        context.waitForEvent('page'),
+        page.locator(selector).click()
+    ])
+
+    await newPage.waitForLoadState();
+
+
+    expect(newPage).toHaveURL(url)
+
+    expect(newPage).toHaveTitle(title)
 
 }
 
@@ -106,5 +120,6 @@ module.exports = {
     pickProduct: pickProduct,
     checkForRemoveButton: checkForRemoveButton,
     checkForProduct: checkForProduct,
-    checkForTwoProducts: checkForTwoProducts
+    checkForTwoProducts: checkForTwoProducts,
+    switchPage: switchPage
 }
