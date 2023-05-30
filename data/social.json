@@ -1,0 +1,11 @@
+{
+    "selectorFacebook": "//li[@class='social_facebook']//a",
+    "selectorTwitter": "//li[@class='social_twitter']//a",
+    "selectorLinkedin": "//li[@class='social_linkedin']//a",
+    "urlFacebook": "https://www.facebook.com/saucelabs",
+    "urlTwitter": "https://twitter.com/saucelabs",
+    "urlLinkedin": "https://www.linkedin.com/company/sauce-labs/?original_referer=",
+    "titleFacebook": "Sauce Labs",
+    "titleTwitter": "Sauce Labs (@saucelabs) / Twitter",
+    "titleLinkedin": "Sauce Labs | LinkedIn"
+}
