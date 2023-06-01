@@ -6,9 +6,6 @@ import { firstName, lastName, postalCode } from "../data/customer.json"
 //@ts-ignore
 import { login, findProduct, fillCustomer, pickProduct, checkForRemoveButton, checkForProduct, checkForTwoProducts } from "../functions/functions";
 
-
-
-
 test.beforeEach(async ({ page }) => {
 
     await page.goto("https://www.saucedemo.com/")
@@ -35,13 +32,12 @@ test("Test products page", async ({ page }) => {
     expect(title).toHaveText("Products")
 })
 
-
-
 test("Test buying one product", async ({ page }) => {
 
     await findProduct(page, bikeLight)
 
     await page.getByText("Add to cart").click()
+
 
     const span = await page.locator("span.shopping_cart_badge")
 

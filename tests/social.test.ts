@@ -5,9 +5,6 @@ import { selectorFacebook, selectorTwitter, selectorLinkedin, urlFacebook, urlTw
 //@ts-ignore
 import { login, switchPage } from "../functions/functions";
 
-
-
-
 test.beforeEach(async ({ page }) => {
 
     await page.goto("https://www.saucedemo.com/")
@@ -23,7 +20,6 @@ test.beforeEach(async ({ page }) => {
 test("Test Facebook", async ({ page, context }) => {
 
     await switchPage(page, expect, context, selectorFacebook, urlFacebook, titleFacebook)
-
 })
 
 test("Test Twitter", async ({ page, context }) => {
@@ -34,10 +30,7 @@ test("Test Twitter", async ({ page, context }) => {
 
 test("Test Linkedin", async ({ page, context }) => {
 
-
     await switchPage(page, expect, context, selectorLinkedin, urlLinkedin, titleLinkedin)
-
-
 })
 
 
