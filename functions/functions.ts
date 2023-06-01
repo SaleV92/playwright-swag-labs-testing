@@ -81,7 +81,6 @@ async function checkForTwoProducts(page, expect, productName1, productName2) {
     const productTexts = await Promise.all(listProduct.map((product) => product.textContent()));
 
     expect(productTexts).toContain(productName1, productName2)
-
 }
 
 async function switchPage(page, expect, context, selector, url, title) {
@@ -100,16 +99,11 @@ async function switchPage(page, expect, context, selector, url, title) {
 
 async function getPriceText(page, productName) {
 
-    const product = await page.waitForSelector(`text=${productName}`);
+    const priceLocator = await page.locator("//div[text()='" + productName + "']/../../../div[@class='pricebar']/div[@class='inventory_item_price']")
 
-    if (product) {
-        const price = await product.$("(//div[@class='pricebar']//div)[2]")
-        const priceText = await price?.innerText()
-        return priceText;
-    } else {
-        return null;
-    }
+    const price = priceLocator.innerText()
 
+    return price;
 }
 
 module.exports = {
