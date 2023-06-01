@@ -38,7 +38,6 @@ test("Test buying one product", async ({ page }) => {
 
     await page.getByText("Add to cart").click()
 
-
     const span = await page.locator("span.shopping_cart_badge")
 
     expect(span).toHaveText("1")
