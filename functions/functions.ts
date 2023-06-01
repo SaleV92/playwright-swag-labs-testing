@@ -3,12 +3,7 @@ async function login(page, username, password) {
     await page.fill('#user-name', username);
     await page.fill('#password', password);
     await page.click('#login-button');
-
-
-
 }
-
-
 
 async function logout(page) {
 
@@ -19,7 +14,6 @@ async function logout(page) {
 
 async function findProduct(page, productName) {
 
-
     const product = await page.waitForSelector(`text=${productName}`);
 
     if (product) {
@@ -28,13 +22,11 @@ async function findProduct(page, productName) {
 
         const noProduct = console.log(`Product not found!`);
     }
-
 }
 
 async function pickProduct(page, productNameF) {
 
     const product = await page.waitForSelector(`text=${productNameF}`);
-
 
     if (product) {
         const addToCart = await product.$("(//button[text()='Add to cart'])[1]");
@@ -57,7 +49,6 @@ async function fillCustomer(page, firstName, lastName, postalCode) {
     await page.fill("#postal-code", postalCode)
 
     await page.click("#continue")
-
 }
 
 async function checkForRemoveButton(page, expect) {
@@ -67,7 +58,6 @@ async function checkForRemoveButton(page, expect) {
         const isVisible = await remove.isVisible();
         expect(isVisible).toBe(true);
     }
-
 }
 
 async function checkForProduct(page, expect, productName) {
@@ -83,7 +73,6 @@ async function checkForProduct(page, expect, productName) {
         expect(productTexts.length).toBe(0);
     }
 }
-
 
 async function checkForTwoProducts(page, expect, productName1, productName2) {
 
@@ -104,13 +93,24 @@ async function switchPage(page, expect, context, selector, url, title) {
 
     await newPage.waitForLoadState();
 
-
     expect(newPage).toHaveURL(url)
 
     expect(newPage).toHaveTitle(title)
-
 }
 
+async function getPriceText(page, productName) {
+
+    const product = await page.waitForSelector(`text=${productName}`);
+
+    if (product) {
+        const price = await product.$("(//div[@class='pricebar']//div)[2]")
+        const priceText = await price?.innerText()
+        return priceText;
+    } else {
+        return null;
+    }
+
+}
 
 module.exports = {
     login: login,
@@ -121,5 +121,6 @@ module.exports = {
     checkForRemoveButton: checkForRemoveButton,
     checkForProduct: checkForProduct,
     checkForTwoProducts: checkForTwoProducts,
-    switchPage: switchPage
+    switchPage: switchPage,
+    getPriceText: getPriceText
 }

@@ -2,7 +2,7 @@ import { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
 
-  testMatch: ["social.test.ts"],
+  testMatch: ["products.test.ts"],
   use: {
     headless: false,
     screenshot: 'only-on-failure',
