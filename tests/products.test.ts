@@ -35,7 +35,7 @@ test("Check Bike light name and prices", async ({ page }) => {
     expect(oldPriceText).toEqual(newPriceText)
 })
 
-test("Check Sauce Labs Backpack name", async ({ page }) => {
+test("Check Sauce Labs Backpack name and prices ", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, backpack);
 
@@ -52,24 +52,21 @@ test("Check Sauce Labs Backpack name", async ({ page }) => {
     expect(oldPriceText).toEqual(newPriceText)
 })
 
-test("Check Sauce Labs Bolt T-Shirt name", async ({ page }) => {
+test("Check Sauce Labs Bolt T-Shirt name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, boltTshirt);
 
     await findProduct(page, boltTshirt)
 
     const productName = await page.locator("div.inventory_details_name.large_size")
-
     expect(productName).toHaveText(boltTshirt)
 
     const newPriceElement = page.locator("div.inventory_details_price");
-
     const newPriceText = await newPriceElement.innerText();
-
     expect(oldPriceText).toEqual(newPriceText)
 })
 
-test("Check Sauce Labs Fleece Jacket name", async ({ page }) => {
+test("Check Sauce Labs Fleece Jacket name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, fleeceJacket);
 
@@ -86,7 +83,7 @@ test("Check Sauce Labs Fleece Jacket name", async ({ page }) => {
     expect(oldPriceText).toEqual(newPriceText)
 })
 
-test("Check Sauce Labs Onesie  name", async ({ page }) => {
+test("Check Sauce Labs Onesie  name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, onesie);
 
@@ -103,7 +100,7 @@ test("Check Sauce Labs Onesie  name", async ({ page }) => {
     expect(oldPriceText).toEqual(newPriceText)
 })
 
-test("Check Red tshirt name", async ({ page }) => {
+test("Check Red tshirt name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, tshirtRed);
 

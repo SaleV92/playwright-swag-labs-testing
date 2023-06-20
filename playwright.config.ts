@@ -2,9 +2,9 @@ import { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
 
-  testMatch: ["products.test.ts"],
+  testMatch: ["filter.test.ts"],
   use: {
-    headless: false,
+    headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
   },

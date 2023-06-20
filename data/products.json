@@ -5,5 +5,9 @@
     "boltTshirt": "Sauce Labs Bolt T-Shirt",
     "onesie": "Sauce Labs Onesie",
     "tshirtRed": "Test.allTheThings() T-Shirt (Red)",
-    "noProducts": ""
+    "noProducts": "",
+    "ascending": "az",
+    "descending": "za",
+    "lohi": "lohi",
+    "hilo": "hilo"
 }
