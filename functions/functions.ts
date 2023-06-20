@@ -106,6 +106,40 @@ async function getPriceText(page, productName) {
     return price;
 }
 
+async function filterProductsByNames(page, expect, order, filter) {
+
+
+    await page.locator(".product_sort_container").selectOption({ value: filter });
+
+    const productNames = await page.$$eval("div.inventory_list>div>div.inventory_item_description>div.inventory_item_label>a>div.inventory_item_name", elements => elements.map(el => el.innerText));
+    const sortedNames = [...productNames].sort((a, b) => a.localeCompare(b));
+    if (order === 'desc') {
+        sortedNames.reverse();
+    }
+    expect(productNames).toEqual(sortedNames);
+
+    console.log(productNames)
+
+}
+
+async function filterProductsByPrice(page, expect, order, filter) {
+    await page.locator(".product_sort_container").selectOption({ value: filter });
+
+    const productNames = await page.$$eval("div.inventory_list>div>div.inventory_item_description>div.inventory_item_label>a>div.inventory_item_name", elements => elements.map(el => el.innerText));
+
+    const productPrices = await page.$$eval("div.inventory_list>div>div.inventory_item_description>div.pricebar>div.inventory_item_price", elements => elements.map(el => parseFloat(el.innerText.replace('$', ''))));
+
+    const sortedPrices = [...productPrices].sort((a, b) => order === 'asc' ? a - b : b - a);
+
+    expect(productPrices).toEqual(sortedPrices);
+
+    console.log("Products: " + productNames + "\nPrices: " + productPrices)
+
+    // console.log(productPrices);
+}
+
+
+
 module.exports = {
     login: login,
     logout: logout,
@@ -116,5 +150,7 @@ module.exports = {
     checkForProduct: checkForProduct,
     checkForTwoProducts: checkForTwoProducts,
     switchPage: switchPage,
-    getPriceText: getPriceText
+    getPriceText: getPriceText,
+    filterProductsByNames: filterProductsByNames,
+    filterProductsByPrice: filterProductsByPrice
 }
