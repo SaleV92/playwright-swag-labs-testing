@@ -3,7 +3,7 @@ import { standardUserUsername, password } from "../data/userLogin.json"
 import { bikeLight, fleeceJacket, backpack, boltTshirt, onesie, tshirtRed, noProducts } from "../data/products.json"
 
 //@ts-ignore
-import { login, findProduct, getPriceText } from "../functions/functions";
+import { login, findProduct, getPriceText, getProductText } from "../functions/functions";
 
 
 test.beforeEach(async ({ page }) => {
@@ -20,7 +20,10 @@ test.beforeEach(async ({ page }) => {
 test("Check Bike light name and prices", async ({ page }) => {
 
 
+
     const oldPriceText = await getPriceText(page, bikeLight);
+
+    const oldPrtext = await getProductText(page, bikeLight)
 
     await findProduct(page, bikeLight)
 
@@ -33,11 +36,21 @@ test("Check Bike light name and prices", async ({ page }) => {
     const newPriceText = await newPriceElement.innerText();
 
     expect(oldPriceText).toEqual(newPriceText)
+
+    const newPrElement = page.locator("div.inventory_details_desc")
+
+    const newPrText = await newPrElement.innerText();
+
+    expect(oldPrtext).toEqual(newPrText)
+
+
 })
 
 test("Check Sauce Labs Backpack name and prices ", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, backpack);
+
+    const oldPrtext = await getProductText(page, backpack)
 
     await findProduct(page, backpack)
 
@@ -50,11 +63,21 @@ test("Check Sauce Labs Backpack name and prices ", async ({ page }) => {
     const newPriceText = await newPriceElement.innerText();
 
     expect(oldPriceText).toEqual(newPriceText)
+
+    const newPrElement = page.locator("div.inventory_details_desc")
+
+    const newPrText = await newPrElement.innerText();
+
+    expect(oldPrtext).toEqual(newPrText)
+
+
 })
 
 test("Check Sauce Labs Bolt T-Shirt name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, boltTshirt);
+
+    const oldPrtext = await getProductText(page, boltTshirt)
 
     await findProduct(page, boltTshirt)
 
@@ -64,11 +87,19 @@ test("Check Sauce Labs Bolt T-Shirt name and prices", async ({ page }) => {
     const newPriceElement = page.locator("div.inventory_details_price");
     const newPriceText = await newPriceElement.innerText();
     expect(oldPriceText).toEqual(newPriceText)
+
+    const newPrElement = page.locator("div.inventory_details_desc")
+
+    const newPrText = await newPrElement.innerText();
+
+    expect(oldPrtext).toEqual(newPrText)
 })
 
 test("Check Sauce Labs Fleece Jacket name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, fleeceJacket);
+
+    const oldPrtext = await getProductText(page, fleeceJacket)
 
     await findProduct(page, fleeceJacket)
 
@@ -81,11 +112,19 @@ test("Check Sauce Labs Fleece Jacket name and prices", async ({ page }) => {
     const newPriceText = await newPriceElement.innerText();
 
     expect(oldPriceText).toEqual(newPriceText)
+
+    const newPrElement = page.locator("div.inventory_details_desc")
+
+    const newPrText = await newPrElement.innerText();
+
+    expect(oldPrtext).toEqual(newPrText)
 })
 
 test("Check Sauce Labs Onesie  name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, onesie);
+
+    const oldPrtext = await getProductText(page, onesie)
 
     await findProduct(page, onesie)
 
@@ -98,11 +137,19 @@ test("Check Sauce Labs Onesie  name and prices", async ({ page }) => {
     const newPriceText = await newPriceElement.innerText();
 
     expect(oldPriceText).toEqual(newPriceText)
+
+    const newPrElement = page.locator("div.inventory_details_desc")
+
+    const newPrText = await newPrElement.innerText();
+
+    expect(oldPrtext).toEqual(newPrText)
 })
 
 test("Check Red tshirt name and prices", async ({ page }) => {
 
     const oldPriceText = await getPriceText(page, tshirtRed);
+
+    const oldPrtext = await getProductText(page, tshirtRed)
 
     await findProduct(page, tshirtRed)
 
@@ -115,5 +162,11 @@ test("Check Red tshirt name and prices", async ({ page }) => {
     const newPriceText = await newPriceElement.innerText();
 
     expect(oldPriceText).toEqual(newPriceText)
+
+    const newPrElement = page.locator("div.inventory_details_desc")
+
+    const newPrText = await newPrElement.innerText();
+
+    expect(oldPrtext).toEqual(newPrText)
 })
 
