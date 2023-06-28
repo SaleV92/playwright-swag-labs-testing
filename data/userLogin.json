@@ -4,5 +4,6 @@
     "problemUserUsername": "problem_user",
     "performanceGlitchUserUsername": "performance_glitch_user",
     "password": "secret_sauce",
-    "wrongPassword": "Secret?sauce"
+    "wrongPassword": "Secret?sauce",
+    "wrongUsername": "standard---user"
 }

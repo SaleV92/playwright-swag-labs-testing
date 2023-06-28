@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test"
-import { standardUserUsername, lockedUserUsername, problemUserUsername, performanceGlitchUserUsername, password, wrongPassword } from "../data/userLogin.json"
+import { standardUserUsername, lockedUserUsername, problemUserUsername, performanceGlitchUserUsername, password, wrongPassword, wrongUsername } from "../data/userLogin.json"
 
 //@ts-ignore
 import { login, logout } from "../functions/functions";
@@ -84,9 +84,18 @@ test("Login without password and username", async ({ page }) => {
     expect(error).toHaveText("Epic sadface: Username is required")
 })
 
-test.only("Login without wrong password and standard user username", async ({ page }) => {
+test("Login without wrong password and standard user username", async ({ page }) => {
 
     await login(page, standardUserUsername, wrongPassword)
+
+    const error = (page).locator("data-test=error")
+
+    expect(error).toHaveText("Epic sadface: Username and password do not match any user in this service")
+})
+
+test("Login without wrong username and valid password", async ({ page }) => {
+
+    await login(page, wrongUsername, password)
 
     const error = (page).locator("data-test=error")
 
