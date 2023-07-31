@@ -2,11 +2,15 @@ import { test, expect } from "@playwright/test"
 import { standardUserUsername, password } from "../data/userLogin.json"
 import { bikeLight, fleeceJacket, noProducts } from "../data/products.json"
 import { firstName, lastName, postalCode } from "../data/customer.json"
+import { HomePage } from "../pages/homePage"
+import { LoginPage } from "../pages/loginPage"
 
 //@ts-ignore
 import { login, findProduct, fillCustomer, pickProduct, checkForRemoveButton, checkForProduct, checkForTwoProducts } from "../functions/functions";
 
 test.beforeEach(async ({ page }) => {
+
+    const loginpage = new LoginPage(page)
 
     await page.goto("https://www.saucedemo.com/")
 
@@ -14,33 +18,37 @@ test.beforeEach(async ({ page }) => {
 
     expect(page).toHaveTitle("Swag Labs")
 
-    await login(page, standardUserUsername, password);
+    await loginpage.login(standardUserUsername, password);
 
 });
 
 test("Test products page", async ({ page }) => {
 
+    const homepage = new HomePage(page)
 
     expect(page).toHaveURL("https://www.saucedemo.com/inventory.html")
 
-    const logo = await page.locator("div.app_logo")
+    await homepage.checkLogo("Swag Labs")
 
-    expect(logo).toHaveText("Swag Labs")
+    await homepage.checkTitle("Products")
 
-    const title = await page.locator("span.title")
-
-    expect(title).toHaveText("Products")
 })
 
 test("Test buying one product", async ({ page }) => {
 
-    await findProduct(page, bikeLight)
+    const homepage = new HomePage(page)
 
-    await page.getByText("Add to cart").click()
+    await homepage.findProduct(bikeLight)
 
-    const span = await page.locator("span.shopping_cart_badge")
+    await homepage.addToCart()
 
-    expect(span).toHaveText("1")
+    //await page.getByText("Add to cart").click()
+
+    await homepage.numberOfProducts("1")
+
+    // const span = await page.locator("span.shopping_cart_badge")
+
+    // expect(span).toHaveText("1")
 
     const remove = await page.getByText("Remove")
 

@@ -1,36 +1,43 @@
 import { test, expect } from "@playwright/test"
 import { standardUserUsername, password } from "../data/userLogin.json"
 import { selectorFacebook, selectorTwitter, selectorLinkedin, urlFacebook, urlTwitter, urlLinkedin, titleFacebook, titleTwitter, titleLinkedin } from "../data/social.json"
+import { HomePage } from "../pages/homePage";
+import { LoginPage } from "../pages/loginPage";
+import { FooterPage } from "../pages/footerPage";
 
-//@ts-ignore
-import { login, switchPage } from "../functions/functions";
 
 test.beforeEach(async ({ page }) => {
 
-    await page.goto("https://www.saucedemo.com/")
+    const loginpage = new LoginPage(page)
+    const homepage = new HomePage(page)
 
-    expect(page).toHaveURL("https://www.saucedemo.com/")
+    await homepage.open()
 
-    expect(page).toHaveTitle("Swag Labs")
-
-    await login(page, standardUserUsername, password);
+    await loginpage.login(standardUserUsername, password);
 
 });
 
 test("Test Facebook", async ({ page, context }) => {
 
-    await switchPage(page, expect, context, selectorFacebook, urlFacebook, titleFacebook)
+    const footerpage = new FooterPage(page)
+
+    await footerpage.switchPage(context, selectorFacebook, urlFacebook, titleFacebook)
 })
 
 test("Test Twitter", async ({ page, context }) => {
 
-    await switchPage(page, expect, context, selectorTwitter, urlTwitter, titleTwitter)
+    const footerpage = new FooterPage(page)
+
+    await footerpage.switchPage(context, selectorTwitter, urlTwitter, titleTwitter)
 
 })
 
 test("Test Linkedin", async ({ page, context }) => {
 
-    await switchPage(page, expect, context, selectorLinkedin, urlLinkedin, titleLinkedin)
+    const footerpage = new FooterPage(page)
+
+    await footerpage.switchPage(context, selectorLinkedin, urlLinkedin, titleLinkedin)
+
 })
 
 

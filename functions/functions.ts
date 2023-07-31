@@ -1,16 +1,4 @@
-async function login(page, username, password) {
 
-    await page.fill('#user-name', username);
-    await page.fill('#password', password);
-    await page.click('#login-button');
-}
-
-async function logout(page) {
-
-    await page.click("#react-burger-menu-btn")
-
-    await page.click("#logout_sidebar_link")
-}
 
 async function findProduct(page, productName) {
 
@@ -83,19 +71,20 @@ async function checkForTwoProducts(page, expect, productName1, productName2) {
     expect(productTexts).toContain(productName1, productName2)
 }
 
-async function switchPage(page, expect, context, selector, url, title) {
+async function checkForProducts(page, expect, ...productNames) {
+    const listProduct = await page.$$(".inventory_item_name");
+    const productTexts = await Promise.all(listProduct.map((product) => product.textContent()));
 
-    const [newPage] = await Promise.all([
-        context.waitForEvent('page'),
-        page.locator(selector).click()
-    ])
+    for (const productName of productNames) {
+        expect(productTexts).toContain(productName);
+    }
 
-    await newPage.waitForLoadState();
-
-    expect(newPage).toHaveURL(url)
-
-    expect(newPage).toHaveTitle(title)
+    if (productNames.length === 0) {
+        console.log("There are no products!");
+        expect(productTexts.length).toBe(0);
+    }
 }
+
 
 async function getPriceText(page, productName) {
 
@@ -141,16 +130,14 @@ async function filterProductsByPrice(page, expect, order, filter) {
 
 
 module.exports = {
-    login: login,
-    logout: logout,
     findProduct: findProduct,
     fillCustomer: fillCustomer,
     pickProduct: pickProduct,
     checkForRemoveButton: checkForRemoveButton,
     checkForProduct: checkForProduct,
     checkForTwoProducts: checkForTwoProducts,
-    switchPage: switchPage,
     getPriceText: getPriceText,
     filterProductsByNames: filterProductsByNames,
-    filterProductsByPrice: filterProductsByPrice
+    filterProductsByPrice: filterProductsByPrice,
+
 }

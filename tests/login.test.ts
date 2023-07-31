@@ -1,34 +1,35 @@
 import { test, expect } from "@playwright/test"
 import { standardUserUsername, lockedUserUsername, problemUserUsername, performanceGlitchUserUsername, password, wrongPassword, wrongUsername } from "../data/userLogin.json"
+import { HomePage } from "../pages/homePage";
+import { LoginPage } from "../pages/loginPage";
 
-//@ts-ignore
-import { login, logout } from "../functions/functions";
 
 
 test.beforeEach(async ({ page }) => {
 
-    await page.goto("https://www.saucedemo.com/")
+    const homepage = new HomePage(page)
 
-    expect(page).toHaveURL("https://www.saucedemo.com/")
-
-    expect(page).toHaveTitle("Swag Labs")
-
+    await homepage.open()
 });
 
 test("Succesfull login", async ({ page }) => {
 
-    await login(page, standardUserUsername, password);
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(standardUserUsername, password);
 
     const burger = await page.locator("#react-burger-menu-btn")
 
     expect(burger).toBeVisible()
 
-    await logout(page);
+    await loginpage.logout();
 })
 
 test("Login with locked out user", async ({ page }) => {
 
-    await login(page, lockedUserUsername, password)
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(lockedUserUsername, password)
 
     const error = (page).locator("data-test=error")
 
@@ -37,29 +38,35 @@ test("Login with locked out user", async ({ page }) => {
 
 test("Login with problem user", async ({ page }) => {
 
-    await login(page, problemUserUsername, password)
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(problemUserUsername, password)
 
     const burger = await page.locator("#react-burger-menu-btn")
 
     expect(burger).toBeVisible()
 
-    await logout(page);
+    await loginpage.logout();
 })
 
 test("Login with performance glitch user", async ({ page }) => {
 
-    await login(page, performanceGlitchUserUsername, password)
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(performanceGlitchUserUsername, password)
 
     const burger = await page.locator("#react-burger-menu-btn")
 
     expect(burger).toBeVisible()
 
-    await logout(page);
+    await loginpage.logout();
 })
 
 test("Login without username", async ({ page }) => {
 
-    await login(page, "", password)
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login("", password)
 
     const error = (page).locator("data-test=error")
 
@@ -68,7 +75,9 @@ test("Login without username", async ({ page }) => {
 
 test("Login without password with standard user", async ({ page }) => {
 
-    await login(page, standardUserUsername, "")
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(standardUserUsername, "")
 
     const error = (page).locator("data-test=error")
 
@@ -77,7 +86,9 @@ test("Login without password with standard user", async ({ page }) => {
 
 test("Login without password and username", async ({ page }) => {
 
-    await login(page, "", "")
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login("", "")
 
     const error = (page).locator("data-test=error")
 
@@ -86,7 +97,9 @@ test("Login without password and username", async ({ page }) => {
 
 test("Login without wrong password and standard user username", async ({ page }) => {
 
-    await login(page, standardUserUsername, wrongPassword)
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(standardUserUsername, wrongPassword)
 
     const error = (page).locator("data-test=error")
 
@@ -95,7 +108,9 @@ test("Login without wrong password and standard user username", async ({ page })
 
 test("Login without wrong username and valid password", async ({ page }) => {
 
-    await login(page, wrongUsername, password)
+    const loginpage = new LoginPage(page)
+
+    await loginpage.login(wrongUsername, password)
 
     const error = (page).locator("data-test=error")
 
