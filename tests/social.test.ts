@@ -14,7 +14,6 @@ test.beforeEach(async ({ page }) => {
     await homepage.open()
 
     await loginpage.login(standardUserUsername, password);
-
 });
 
 test("Test Facebook", async ({ page, context }) => {
@@ -29,7 +28,6 @@ test("Test Twitter", async ({ page, context }) => {
     const footerpage = new FooterPage(page)
 
     await footerpage.switchPage(context, selectorTwitter, urlTwitter, titleTwitter)
-
 })
 
 test("Test Linkedin", async ({ page, context }) => {
@@ -37,7 +35,6 @@ test("Test Linkedin", async ({ page, context }) => {
     const footerpage = new FooterPage(page)
 
     await footerpage.switchPage(context, selectorLinkedin, urlLinkedin, titleLinkedin)
-
 })
 
 

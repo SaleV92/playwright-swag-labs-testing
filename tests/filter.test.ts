@@ -1,53 +1,47 @@
 import { test, expect } from "@playwright/test"
 import { standardUserUsername, password } from "../data/userLogin.json"
 import { ascending, descending, hilo, lohi } from "../data/products.json"
-
-//@ts-ignore
-import { login, filterProductsByNames, filterProductsByPrice } from "../functions/functions";
+import { LoginPage } from "../pages/loginPage"
+import { FilterPage } from "../pages/filterPage";
 
 
 test.beforeEach(async ({ page }) => {
 
+    const loginpage = new LoginPage(page)
+
     await page.goto("https://www.saucedemo.com/")
 
     expect(page).toHaveURL("https://www.saucedemo.com/")
-
     expect(page).toHaveTitle("Swag Labs")
 
-    await login(page, standardUserUsername, password);
-})
+    await loginpage.login(standardUserUsername, password);
+
+});
 
 test("Test filter ascending names", async ({ page }) => {
 
-    await filterProductsByNames(page, expect, ascending)
+    const filterpage = new FilterPage(page)
 
-    await page.waitForTimeout(5000)
-
-    // await filterProducts(page, hilo)
-
-    // await page.waitForTimeout(5000)
-
-    // await filterProducts(page, lohi)
-
-    // await page.waitForTimeout(5000)
-
+    await filterpage.filterProductsByNames(expect, ascending)
 })
 
 test("Test filter descending names", async ({ page }) => {
 
-    await filterProductsByNames(page, expect, "desc", descending)
+    const filterpage = new FilterPage(page)
 
+    await filterpage.filterProductsByNames("desc", descending)
 })
 
 test("Test filter ascending price", async ({ page }) => {
 
-    await filterProductsByPrice(page, expect, "asc", lohi)
+    const filterpage = new FilterPage(page)
 
-
+    await filterpage.filterProductsByPrice("asc", lohi)
 })
 
 test("Test filter descending price", async ({ page }) => {
 
-    await filterProductsByPrice(page, expect, "desc", hilo)
+    const filterpage = new FilterPage(page)
 
+    await filterpage.filterProductsByPrice("desc", hilo)
 })

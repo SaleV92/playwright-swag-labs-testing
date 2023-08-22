@@ -25,7 +25,6 @@ export class HomePage {
 
     async checkLogo(logo) {
 
-
         const locatorLogo = await this.page.locator("div.app_logo")
 
         expect(locatorLogo).toHaveText(logo)
@@ -53,6 +52,24 @@ export class HomePage {
         const span = await this.page.locator("span.shopping_cart_badge")
 
         expect(span).toHaveText(numberInString)
-
     }
+
+    async pickProduct(productNameF) {
+
+        const product = await this.page.waitForSelector(`text=${productNameF}`);
+
+        if (product) {
+            const addToCart = await product.$("(//button[text()='Add to cart'])[1]");
+            if (addToCart) {
+                await addToCart.click();
+            } else {
+                console.log(`"Add to cart" button not found for product: ${productNameF}`)
+            }
+        } else {
+            console.log(`Product not found: ${productNameF}`);
+        }
+    }
+
+
+
 }

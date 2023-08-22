@@ -6,20 +6,17 @@ import { HomePage } from "../pages/homePage"
 import { LoginPage } from "../pages/loginPage"
 
 //@ts-ignore
-import { login, findProduct, fillCustomer, pickProduct, checkForRemoveButton, checkForProduct, checkForTwoProducts } from "../functions/functions";
+import { checkForRemoveButton, checkForTwoProducts } from "../functions/functions";
+import { BuyingPage } from "../pages/buyingPage"
 
 test.beforeEach(async ({ page }) => {
 
     const loginpage = new LoginPage(page)
+    const homepage = new HomePage(page)
 
-    await page.goto("https://www.saucedemo.com/")
-
-    expect(page).toHaveURL("https://www.saucedemo.com/")
-
-    expect(page).toHaveTitle("Swag Labs")
+    await homepage.open()
 
     await loginpage.login(standardUserUsername, password);
-
 });
 
 test("Test products page", async ({ page }) => {
@@ -31,24 +28,18 @@ test("Test products page", async ({ page }) => {
     await homepage.checkLogo("Swag Labs")
 
     await homepage.checkTitle("Products")
-
 })
 
 test("Test buying one product", async ({ page }) => {
 
     const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
 
     await homepage.findProduct(bikeLight)
 
     await homepage.addToCart()
 
-    //await page.getByText("Add to cart").click()
-
     await homepage.numberOfProducts("1")
-
-    // const span = await page.locator("span.shopping_cart_badge")
-
-    // expect(span).toHaveText("1")
 
     const remove = await page.getByText("Remove")
 
@@ -58,7 +49,7 @@ test("Test buying one product", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
-    await checkForProduct(page, expect, bikeLight)
+    await buyingpage.checkForProduct(bikeLight)
 
     const priceProduct = await page.locator(".inventory_item_price")
 
@@ -66,7 +57,7 @@ test("Test buying one product", async ({ page }) => {
 
     await page.click("#checkout")
 
-    await fillCustomer(page, firstName, lastName, postalCode)
+    await buyingpage.fillCustomer(firstName, lastName, postalCode)
 
     await page.click("#finish")
 
@@ -75,14 +66,16 @@ test("Test buying one product", async ({ page }) => {
     expect(page).toHaveURL("https://www.saucedemo.com/checkout-complete.html")
 
     expect(finish).toHaveText("Thank you for your order!")
-
 })
 
 test("Test buying two products", async ({ page }) => {
 
-    await pickProduct(page, bikeLight)
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
 
-    await pickProduct(page, fleeceJacket)
+    await homepage.pickProduct(bikeLight)
+
+    await homepage.pickProduct(fleeceJacket)
 
     const spanTwo = await page.locator("span.shopping_cart_badge")
 
@@ -98,7 +91,7 @@ test("Test buying two products", async ({ page }) => {
 
     await page.click("#checkout")
 
-    await fillCustomer(page, firstName, lastName, postalCode)
+    await buyingpage.fillCustomer(firstName, lastName, postalCode)
 
     await page.click("#finish")
 
@@ -107,11 +100,11 @@ test("Test buying two products", async ({ page }) => {
     expect(page).toHaveURL("https://www.saucedemo.com/checkout-complete.html")
 
     expect(finish).toHaveText("Thank you for your order!")
-
-
 })
 
 test("Test empty cart", async ({ page }) => {
+
+    const buyingpage = new BuyingPage(page)
 
     expect(page).toHaveURL("https://www.saucedemo.com/inventory.html")
 
@@ -123,12 +116,15 @@ test("Test empty cart", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
-    await checkForProduct(page, expect, [])
+    await buyingpage.checkForProduct([])
 })
 
 test("Test empty buyer data", async ({ page }) => {
 
-    await findProduct(page, bikeLight)
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
+
+    await homepage.findProduct(bikeLight)
 
     await page.getByText("Add to cart").click()
 
@@ -144,11 +140,11 @@ test("Test empty buyer data", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
-    await checkForProduct(page, expect, bikeLight)
+    await buyingpage.checkForProduct(bikeLight)
 
     await page.click("#checkout")
 
-    await fillCustomer(page, "", "", "")
+    await buyingpage.fillCustomer("", "", "")
 
     const errorFirstName = await page.locator("#first-name")
 
@@ -165,12 +161,14 @@ test("Test empty buyer data", async ({ page }) => {
     const error = await page.locator("h3[data-test='error']")
 
     expect(error).toHaveText("Error: First Name is required")
-
 })
 
 test("Test empty first name data", async ({ page }) => {
 
-    await findProduct(page, bikeLight)
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
+
+    await homepage.findProduct(bikeLight)
 
     await page.getByText("Add to cart").click()
 
@@ -186,11 +184,11 @@ test("Test empty first name data", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
-    await checkForProduct(page, expect, bikeLight)
+    await buyingpage.checkForProduct(bikeLight)
 
     await page.click("#checkout")
 
-    await fillCustomer(page, "", lastName, postalCode)
+    await buyingpage.fillCustomer("", lastName, postalCode)
 
     const errorFirstName = await page.locator("#first-name")
 
@@ -207,13 +205,14 @@ test("Test empty first name data", async ({ page }) => {
     const error = await page.locator("h3[data-test='error']")
 
     expect(error).toHaveText("Error: First Name is required")
-
-
 })
 
 test("Test empty last name data", async ({ page }) => {
 
-    await findProduct(page, bikeLight)
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
+
+    await homepage.findProduct(bikeLight)
 
     await page.getByText("Add to cart").click()
 
@@ -229,11 +228,11 @@ test("Test empty last name data", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
-    await checkForProduct(page, expect, bikeLight)
+    await buyingpage.checkForProduct(bikeLight)
 
     await page.click("#checkout")
 
-    await fillCustomer(page, firstName, "", postalCode)
+    await buyingpage.fillCustomer(firstName, "", postalCode)
 
     const errorFirstName = await page.locator("#first-name")
 
@@ -250,13 +249,14 @@ test("Test empty last name data", async ({ page }) => {
     const error = await page.locator("h3[data-test='error']")
 
     expect(error).toHaveText("Error: Last Name is required")
-
-
 })
 
 test("Test empty postal code data", async ({ page }) => {
 
-    await findProduct(page, bikeLight)
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
+
+    await homepage.findProduct(bikeLight)
 
     await page.getByText("Add to cart").click()
 
@@ -272,11 +272,11 @@ test("Test empty postal code data", async ({ page }) => {
 
     expect(page).toHaveURL("https://www.saucedemo.com/cart.html")
 
-    await checkForProduct(page, expect, bikeLight)
+    await buyingpage.checkForProduct(bikeLight)
 
     await page.click("#checkout")
 
-    await fillCustomer(page, firstName, lastName, "")
+    await buyingpage.fillCustomer(firstName, lastName, "")
 
     const errorFirstName = await page.locator("#first-name")
 
@@ -293,6 +293,4 @@ test("Test empty postal code data", async ({ page }) => {
     const error = await page.locator("h3[data-test='error']")
 
     expect(error).toHaveText("Error: Postal Code is required")
-
-
 })
