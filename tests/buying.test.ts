@@ -30,6 +30,34 @@ test("Test products page", async ({ page }) => {
     await homepage.checkTitle("Products")
 })
 
+test("One product in shoping cart ", async ({ page }) => {
+
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
+
+    await homepage.findProduct(bikeLight)
+
+    await homepage.addToCart()
+
+    await homepage.numberOfProducts("1")
+})
+
+test("Two products in shoping cart", async ({ page }) => {
+
+    const homepage = new HomePage(page)
+    const buyingpage = new BuyingPage(page)
+
+    await homepage.pickProduct(bikeLight)
+
+    await homepage.pickProduct(fleeceJacket)
+
+    const spanTwo = await page.locator("span.shopping_cart_badge")
+
+    expect(spanTwo).toHaveText("2")
+
+
+})
+
 test("Test buying one product", async ({ page }) => {
 
     const homepage = new HomePage(page)
@@ -144,19 +172,17 @@ test("Test empty buyer data", async ({ page }) => {
 
     await page.click("#checkout")
 
+    // Fill form with empty fields
+
     await buyingpage.fillCustomer("", "", "")
 
-    const errorFirstName = await page.locator("#first-name")
+    const errorFirstName = await page.locator("#first-name");
+    const errorLastName = await page.locator("#last-name");
+    const errorPostalCode = await page.locator("#postal-code");
 
-    expect(errorFirstName).toHaveValue("")
-
-    const errorLastName = await page.locator("#last-name")
-
-    expect(errorLastName).toHaveValue("")
-
-    const errorPostalCode = await page.locator("#postal-code")
-
-    expect(errorPostalCode).toHaveValue("")
+    expect(errorFirstName).toHaveValue("");
+    expect(errorLastName).toHaveValue("");
+    expect(errorPostalCode).toHaveValue("");
 
     const error = await page.locator("h3[data-test='error']")
 
@@ -188,18 +214,16 @@ test("Test empty first name data", async ({ page }) => {
 
     await page.click("#checkout")
 
+    // Fill form without firstname
+
     await buyingpage.fillCustomer("", lastName, postalCode)
 
     const errorFirstName = await page.locator("#first-name")
-
-    expect(errorFirstName).toHaveValue("")
-
     const errorLastName = await page.locator("#last-name")
-
-    expect(errorLastName).toHaveValue(lastName)
-
     const errorPostalCode = await page.locator("#postal-code")
 
+    expect(errorFirstName).toHaveValue("")
+    expect(errorLastName).toHaveValue(lastName)
     expect(errorPostalCode).toHaveValue(postalCode)
 
     const error = await page.locator("h3[data-test='error']")
@@ -232,18 +256,16 @@ test("Test empty last name data", async ({ page }) => {
 
     await page.click("#checkout")
 
+    // Fill form without last name
+
     await buyingpage.fillCustomer(firstName, "", postalCode)
 
     const errorFirstName = await page.locator("#first-name")
-
-    expect(errorFirstName).toHaveValue(firstName)
-
     const errorLastName = await page.locator("#last-name")
-
-    expect(errorLastName).toHaveValue("")
-
     const errorPostalCode = await page.locator("#postal-code")
 
+    expect(errorFirstName).toHaveValue(firstName)
+    expect(errorLastName).toHaveValue("")
     expect(errorPostalCode).toHaveValue(postalCode)
 
     const error = await page.locator("h3[data-test='error']")
@@ -276,18 +298,16 @@ test("Test empty postal code data", async ({ page }) => {
 
     await page.click("#checkout")
 
+    // Fill form without last name
+
     await buyingpage.fillCustomer(firstName, lastName, "")
 
     const errorFirstName = await page.locator("#first-name")
-
-    expect(errorFirstName).toHaveValue(firstName)
-
     const errorLastName = await page.locator("#last-name")
-
-    expect(errorLastName).toHaveValue(lastName)
-
     const errorPostalCode = await page.locator("#postal-code")
 
+    expect(errorFirstName).toHaveValue(firstName)
+    expect(errorLastName).toHaveValue(lastName)
     expect(errorPostalCode).toHaveValue("")
 
     const error = await page.locator("h3[data-test='error']")
