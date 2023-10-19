@@ -1,15 +1,5 @@
 
 
-async function checkForRemoveButton(page, expect) {
-
-    const removes = await page.$$('text="Remove"');
-    for (const remove of removes) {
-        const isVisible = await remove.isVisible();
-        expect(isVisible).toBe(true);
-    }
-}
-
-
 async function checkForTwoProducts(page, expect, productName1, productName2) {
 
     const listProduct = await page.$$(".inventory_item_name")
@@ -56,7 +46,6 @@ async function getProductText(page, productName) {
 }
 
 module.exports = {
-    checkForRemoveButton: checkForRemoveButton,
     checkForTwoProducts: checkForTwoProducts,
     getPriceText: getPriceText,
     getProductText: getProductText

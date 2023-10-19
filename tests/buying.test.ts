@@ -33,7 +33,6 @@ test("Test products page", async ({ page }) => {
 test("One product in shoping cart ", async ({ page }) => {
 
     const homepage = new HomePage(page)
-    const buyingpage = new BuyingPage(page)
 
     await homepage.findProduct(bikeLight)
 
@@ -69,9 +68,7 @@ test("Test buying one product", async ({ page }) => {
 
     await homepage.numberOfProducts("1")
 
-    const remove = await page.getByText("Remove")
-
-    expect(remove).toBeVisible()
+    await buyingpage.checkForRemoveButton(true)
 
     await page.click("a.shopping_cart_link")
 
@@ -109,7 +106,7 @@ test("Test buying two products", async ({ page }) => {
 
     expect(spanTwo).toHaveText("2")
 
-    await checkForRemoveButton(page, expect)
+    await buyingpage.checkForRemoveButton(true)
 
     await page.click("a.shopping_cart_link")
 
@@ -160,9 +157,7 @@ test("Test empty buyer data", async ({ page }) => {
 
     expect(span).toHaveText("1")
 
-    const remove = await page.getByText("Remove")
-
-    expect(remove).toBeVisible()
+    await buyingpage.checkForRemoveButton(true)
 
     await page.click("a.shopping_cart_link")
 
@@ -202,9 +197,7 @@ test("Test empty first name data", async ({ page }) => {
 
     expect(span).toHaveText("1")
 
-    const remove = await page.getByText("Remove")
-
-    expect(remove).toBeVisible()
+    await buyingpage.checkForRemoveButton(true)
 
     await page.click("a.shopping_cart_link")
 
@@ -244,9 +237,7 @@ test("Test empty last name data", async ({ page }) => {
 
     expect(span).toHaveText("1")
 
-    const remove = await page.getByText("Remove")
-
-    expect(remove).toBeVisible()
+    await buyingpage.checkForRemoveButton(true)
 
     await page.click("a.shopping_cart_link")
 
@@ -286,9 +277,7 @@ test("Test empty postal code data", async ({ page }) => {
 
     expect(span).toHaveText("1")
 
-    const remove = await page.getByText("Remove")
-
-    expect(remove).toBeVisible()
+    await buyingpage.checkForRemoveButton(true)
 
     await page.click("a.shopping_cart_link")
 
