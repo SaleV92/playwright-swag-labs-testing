@@ -64,3 +64,22 @@ test("Reset app state", async ({page}) => {
 
     await buyingpage.checkForRemoveButton(false)
 })
+
+test("About button", async ({page}) => {
+
+    const homepage = new HomePage(page)
+    const navbarpage = new NavBarPage(page);
+
+
+    await navbarpage.openNavBar()
+
+    await navbarpage.aboutButton()
+
+    
+
+
+
+
+
+})
+
